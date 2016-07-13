@@ -9,13 +9,26 @@ import flixel.math.FlxMath;
 
 class MenuState extends FlxState
 {
+	private var _btnPlay:FlxButton;  // Play button
+
 	override public function create():Void
 	{
+		// Play button, used to switch from MenuState to PlayState.
+		_btnPlay = new FlxButton(0, 0, "Play", clickPlay);
+		_btnPlay.screenCenter();
+		add(_btnPlay);
+
 		super.create();
 	}
 
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
+	}
+
+	// Function to be attached to the Play button. Switches to the PlayState.
+	private function clickPlay():Void
+	{
+		FlxG.switchState(new PlayState());
 	}
 }

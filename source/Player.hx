@@ -1,19 +1,91 @@
 package;
 
+import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.math.FlxPoint;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.util.FlxColor;
 
 /**
- * ...
+ * Description:  Player class is controlled by the user's keyboard inputs.
+ *   Valid controls are arrow keys and WASD.
  * @author Noah Bumgardner
  */
 class Player extends FlxSprite
 {
+	public var speed:Float = 200;
 
 	public function new(?X:Float=0, ?Y:Float=0) 
 	{
 		super(X, Y);
 		makeGraphic(16, 16, FlxColor.BLUE);
+		drag.x = drag.y = 1600;
+	}
+
+	// Reads keyboard inputs to set the speed and angle of the Player.
+	//   Diagonal movement is slower than vertical or horizontal movement.
+	private function movement():Void
+	{
+		var _up:Bool = false;
+		var _down:Bool = false;
+		var _left:Bool = false;
+		var _right:Bool = false;
+
+		// Check movement keys: Arrow keys and WASD.
+		_up = FlxG.keys.anyPressed([UP, W]);
+		_down = FlxG.keys.anyPressed([DOWN, S]);
+		_left = FlxG.keys.anyPressed([LEFT, A]);
+		_right = FlxG.keys.anyPressed([RIGHT, D]);
+
+		// Opposite directions cancel each other, into false.
+		if (_up && _down) 
+		{
+			_up = _down = false;
+		}
+		if (_left && _right)
+		{
+			_left = _right = false;
+		}
+
+		// If a valid move was made, calculate and set new movement speed and angle.
+		if (_up || _down || _left || _right)
+		{
+			// Find angle of movement.
+			//   0 is East or Right. 90 is North or Up.
+			var mA:Float = 0;
+			if (_up)
+			{
+				mA = -90;
+				// Check for diagonal-up moves
+				if (_left)
+					mA -= 45;
+				else if (_right)
+					mA += 45;
+			}
+			else if (_down)
+			{
+				mA = 90;
+				// Check for diagonal-down moves
+				if (_left)
+					mA += 45;
+				else if (_right)
+					mA -= 45;
+			}
+			else if (_left)
+				mA = 180;
+			else if (_right)
+				mA = 0;
+
+			// Set speed, then rotate it to angle mA.
+			//   Diagonal moves are slower.
+			velocity.set(speed, 0);
+			velocity.rotate(FlxPoint.weak(0, 0), mA);
+		}
+	}
+
+	override public function update(elapsed:Float):Void 
+	{
+		movement();
+		super.update(elapsed);
 	}
 }

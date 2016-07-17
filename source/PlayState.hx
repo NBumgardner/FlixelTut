@@ -51,6 +51,7 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 		FlxG.collide(_player, _mWalls);
+		FlxG.overlap(_player, _grpCoins, playerTouchCoin);
 	}
 
 	private function placeEntities(entityName:String, entityData:Xml):Void
@@ -65,6 +66,16 @@ class PlayState extends FlxState
 		else if (entityName == "coin")
 		{
 			_grpCoins.add(new Coin(x + 4, y + 4));
+		}
+	}
+
+	// Called when Player and a Coin overlap.
+	private function playerTouchCoin(P:Player, C:Coin):Void
+	{
+		if (P.alive && P.exists && C.alive && C.exists)
+		{
+			// Remove coin.
+			C.kill();
 		}
 	}
 }

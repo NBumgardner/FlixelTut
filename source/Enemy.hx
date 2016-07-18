@@ -1,6 +1,9 @@
 package;
+import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
+import flixel.math.FlxPoint;
+import flixel.math.FlxVelocity;
 
 /**
  * Description:  Enemy is a common class for all enemies in the game.
@@ -14,6 +17,13 @@ class Enemy extends FlxSprite
 	//   0: Common enemy, many per room.
 	//   1: Boss enemy, one per room.
 	public var etype(default, null):Int;
+
+	// AI variables
+	private var _brain:FSM;  // Finite-State Machine
+	private var _idleTmr:Float;  // idle Timer
+	private var _moveDir:Float;  // move Direction
+	public var seesPlayer:Bool = false;
+	public var playerPos(default, null):FlxPoint;  // player Position
 
 	public function new(X:Float=0, Y:Float=0, EType:Int)
 	{
@@ -34,6 +44,11 @@ class Enemy extends FlxSprite
 		height = 14;
 		offset.x = 4;
 		offset.y = 2;
+
+		// Initialize AI variables
+		_brain = new FSM(idle);
+		_idleTmr = 0;
+		playerPos = FlxPoint.get();
 	}
 
 	override public function draw():Void
@@ -68,5 +83,57 @@ class Enemy extends FlxSprite
 			}
 		}
 		super.draw();
+	}
+
+	public function idle():Void
+	{
+		/**
+		 * Chase Player if visible. Otherwise wait until the idle timer ends;
+		 *   then take a 50% chance to move in a random direction before
+		 *   resetting the idle timer.
+		 */
+		if (seesPlayer)
+		{
+			_brain.activeState = chase;
+		}
+		else if (_idleTmr <= 0)
+		{
+			if (FlxG.random.bool(1))
+			{
+				// Stop moving
+				_moveDir = -1;
+				velocity.x = velocity.y = 0;
+			}
+			else
+			{
+				// Move in random direction
+				_moveDir = FlxG.random.int(0, 8) * 45;
+				velocity.set(speed * .5, 0);
+				velocity.rotate(FlxPoint.weak(), _moveDir);
+			}
+			// Set idle timer
+			_idleTmr = FlxG.random.int(1, 4);
+		}
+		else
+			_idleTmr -= FlxG.elapsed;
+	}
+
+	public function chase():Void
+	{
+		if (!seesPlayer)
+		{
+			// Lost sight of Player. Return to idle state.
+			_brain.activeState = idle;
+		}
+		else
+		{
+			FlxVelocity.moveTowardsPoint(this, playerPos, Std.int(speed));
+		}
+	}
+
+	override public function update(elapsed:Float):Void
+	{
+		_brain.update();
+		super.update(elapsed);
 	}
 }

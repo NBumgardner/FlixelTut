@@ -18,6 +18,9 @@ class PlayState extends FlxState
 	private var _mWalls:FlxTilemap;
 	private var _grpCoins:FlxTypedGroup<Coin>;
 	private var _grpEnemies:FlxTypedGroup<Enemy>;
+	private var _hud:HUD;
+	private var _money:Int = 0;
+	private var _health:Int = 3;
 
 	override public function create():Void
 	{
@@ -46,6 +49,9 @@ class PlayState extends FlxState
 
 		// Set camera to follow Player
 		FlxG.camera.follow(_player, TOPDOWN, 1);
+
+		_hud = new HUD();
+		add(_hud);
 
 		super.create();
 	}
@@ -86,6 +92,8 @@ class PlayState extends FlxState
 		{
 			// Remove coin.
 			C.kill();
+			_money++;
+			_hud.updateHUD(_health, _money);
 		}
 	}
 

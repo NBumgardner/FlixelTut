@@ -4,7 +4,7 @@ import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-import flixel.util.FlxSpriteUtil;
+using flixel.util.FlxSpriteUtil;
 
 /**
  * Description:  HUD display's Player's current Health and Money.
@@ -23,7 +23,7 @@ class HUD extends FlxTypedGroup<FlxSprite>
 		super();
 		// Background
 		_sprBack = new FlxSprite().makeGraphic(FlxG.width, 20, FlxColor.BLACK);
-		// _sprBack.drawRect(0, 19, FlxG.width, 1, FlxColor.WHITE); // Causes ERR
+		_sprBack.drawRect(0, 19, FlxG.width, 1, FlxColor.WHITE);
 		// Health counter
 		_txtHealth = new FlxText(16, 2, 0, "3 / 3", 8);
 		_txtHealth.setBorderStyle(SHADOW, FlxColor.GRAY, 1, 1);

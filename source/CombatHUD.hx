@@ -18,7 +18,7 @@ import flixel.util.FlxColor;
 using flixel.util.FlxSpriteUtil;
 
 /**
- * Created by Gama11, SeiferTim, and adrianulima for a HaxeFlixel tutorial.
+ * Originally by Gama11, SeiferTim, and adrianulima for a HaxeFlixel tutorial.
  * Copied with minor edits by Noah Bumgardner.
  */
 class CombatHUD extends FlxTypedGroup<FlxSprite>
@@ -92,24 +92,30 @@ class CombatHUD extends FlxTypedGroup<FlxSprite>
 		add(_sprEnemy);
 		
 		// setup the player's health display and add it to the group.
-		_txtPlayerHealth = new FlxText(0, _sprPlayer.y + _sprPlayer.height  + 2, 0, "3 / 3", 8);
+		_txtPlayerHealth = new FlxText(0, _sprPlayer.y + _sprPlayer.height + 2, 0, "3 / 3", 8);
 		_txtPlayerHealth.alignment = CENTER;
 		_txtPlayerHealth.x = _sprPlayer.x + 4 - (_txtPlayerHealth.width / 2);
 		add(_txtPlayerHealth);
 		
 		// create and add a FlxBar to show the enemy's health. We'll make it Red and Yellow.
-		_enemyHealthBar = new FlxBar(_sprEnemy.x - 6, _txtPlayerHealth.y, LEFT_TO_RIGHT, 20, 10);
-		_enemyHealthBar.createFilledBar(0xffdc143c, FlxColor.YELLOW, true, FlxColor.YELLOW);
+		_enemyHealthBar = new FlxBar(_sprEnemy.x - 6, _txtPlayerHealth.y,
+			LEFT_TO_RIGHT, 20, 10);
+		_enemyHealthBar.createFilledBar(0xffdc143c, FlxColor.YELLOW, true,
+			FlxColor.YELLOW);
 		add(_enemyHealthBar);
 		
 		// create our choices and add them to the group.
 		_choices = new Array<FlxText>();
-		_choices.push(new FlxText(_sprBack.x + 30, _sprBack.y + 48, 85, "FIGHT", 22));
-		_choices.push(new FlxText(_sprBack.x + 30, _choices[0].y + _choices[0].height + 8, 85, "FLEE", 22));
+		_choices.push(new FlxText(_sprBack.x + 30,
+			_sprBack.y + 48, 85, "FIGHT", 22));
+		_choices.push(new FlxText(_sprBack.x + 30,
+			_choices[0].y + _choices[0].height + 8, 85, "FLEE", 22));
 		add(_choices[0]);
 		add(_choices[1]);
 		
-		_pointer = new FlxSprite(_sprBack.x + 10, _choices[0].y + (_choices[0].height / 2) - 8, AssetPaths.pointer__png);
+		_pointer = new FlxSprite(_sprBack.x + 10,
+			_choices[0].y + (_choices[0].height / 2) - 8,
+			AssetPaths.pointer__png);
 		_pointer.visible = false;
 		add(_pointer);
 		
@@ -134,14 +140,17 @@ class CombatHUD extends FlxTypedGroup<FlxSprite>
 		_results.visible = false;
 		add(_results);
 		
-		// like we did in our HUD class, we need to set the scrollFactor on each of our children objects to 0,0. We also set alpha to 0 (so we can fade this in)
+		// like we did in our HUD class, we need to set the scrollFactor
+		//   on each of our children objects to 0,0. We also set alpha to 0
+		//   (so we can fade this in)
 		forEach(function(spr:FlxSprite)
 		{
 			spr.scrollFactor.set();
 			spr.alpha = 0;
 		});
 		
-		// mark this object as not active and not visible so update and draw don't get called on it until we're ready to show it.
+		// mark this object as not active and not visible so update and draw
+		//   don't get called on it until we're ready to show it.
 		active = false;
 		visible = false;
 		
@@ -155,7 +164,8 @@ class CombatHUD extends FlxTypedGroup<FlxSprite>
 	}
 	
 	/**
-	 * This function will be called from PlayState when we want to start combat. It will setup the screen and make sure everything is ready.
+	 * This function will be called from PlayState when we want to start combat.
+	 *   It will setup the screen and make sure everything is ready.
 	 * @param	PlayerHealth	The amount of health the player is starting with
 	 * @param	E				This links back to the Enemy we are fighting with so we can get it's health and type (to change our sprite).
 	 */
@@ -172,7 +182,9 @@ class CombatHUD extends FlxTypedGroup<FlxSprite>
 		var rc:Float = 1 / 3;
 		var gc:Float = 1 / 2;
 		var bc:Float = 1 / 6;
-		screenPixels.applyFilter(screenPixels, screenPixels.rect, new Point(), new ColorMatrixFilter([rc, gc, bc, 0, 0, rc, gc, bc, 0, 0, rc, gc, bc, 0, 0, 0, 0, 0, 1, 0]));
+		screenPixels.applyFilter(screenPixels, screenPixels.rect, new Point(),
+			new ColorMatrixFilter([rc, gc, bc, 0, 0, rc, gc, bc, 0, 0, rc, gc,
+			bc, 0, 0, 0, 0, 0, 1, 0]));
 		
 		_sndCombat.play();
 		playerHealth = PlayerHealth;	// we set our playerHealth variable to the value that was passed to us
@@ -185,7 +197,8 @@ class CombatHUD extends FlxTypedGroup<FlxSprite>
 		_enemyHealthBar.value = 100;	// the enemy's health bar starts at 100%
 		_sprEnemy.changeEnemy(e.etype);	// change our enemy's image to match their type.
 		
-		// make sure we initialize all of these before we start so nothing looks 'wrong' the second time we get 
+		// make sure we initialize all of these before we start
+		//   so nothing looks 'wrong' the second time we get
 		_wait = true;
 		_results.text = "";
 		_pointer.visible = false;
@@ -194,7 +207,8 @@ class CombatHUD extends FlxTypedGroup<FlxSprite>
 		_selected = 0;
 		movePointer();
 		
-		visible = true;	// make our hud visible (so draw gets called on it) - note, it's not active, yet!
+		// make our hud visible (so draw gets called on it) - note, it's not active, yet!
+		visible = true;
 		
 		// do a numeric tween to fade in our combat hud when the tween is finished, call finishFadeIn
 		FlxTween.num(0, 1, .66, { ease: FlxEase.circOut, onComplete: finishFadeIn }, updateAlpha);
@@ -213,7 +227,8 @@ class CombatHUD extends FlxTypedGroup<FlxSprite>
 	}
 	
 	/**
-	 * When we've finished fading in, we set our hud to active (so it gets updates), and allow the player to interact. We show our pointer, too.
+	 * When we've finished fading in, we set our hud to active (so it gets updates),
+	 * and allow the player to interact. We show our pointer, too.
 	 */
 	private function finishFadeIn(_):Void
 	{
@@ -271,7 +286,9 @@ class CombatHUD extends FlxTypedGroup<FlxSprite>
 			if (_fire)
 			{
 				_sndSelect.play();
-				makeChoice(); // when the player chooses either option, we call this function to process their selection
+				// when the player chooses either option, we call
+				//   this function to process their selection
+				makeChoice();
 			}
 			else if (_up)
 			{
@@ -354,7 +371,8 @@ class CombatHUD extends FlxTypedGroup<FlxSprite>
 					}});
 					_sndHurt.play();
 					_enemyHealth--;
-					_enemyHealthBar.value = (_enemyHealth / _enemyMaxHealth) * 100; // change the enemy's health bar
+					// change the enemy's health bar
+					_enemyHealthBar.value = (_enemyHealth / _enemyMaxHealth) * 100;
 				}
 				else
 				{
@@ -363,7 +381,8 @@ class CombatHUD extends FlxTypedGroup<FlxSprite>
 					_sndMiss.play();
 				}
 				
-				// position the damage text over the enemy, and set it's alpha to 0 but it's visible to true (so that it gets draw called on it)
+				// position the damage text over the enemy, and set it's alpha to 0
+				//   but it's visible to true (so that it gets draw called on it)
 				_damages[1].x = _sprEnemy.x + 2 - (_damages[1].width / 2);
 				_damages[1].y = _sprEnemy.y + 4 - (_damages[1].height / 2);
 				_damages[1].alpha = 0;
@@ -375,9 +394,12 @@ class CombatHUD extends FlxTypedGroup<FlxSprite>
 					enemyAttack();
 				}
 				
-				// setup 2 tweens to allow the damage indicators to fade in and float up from the sprites
-				FlxTween.num(_damages[0].y, _damages[0].y - 12, 1, { ease:FlxEase.circOut}, updateDamageY);
-				FlxTween.num(0, 1, .2, { ease: FlxEase.circInOut, onComplete: doneDamageIn }, updateDamageAlpha);
+				// setup 2 tweens to allow the damage indicators
+				//   to fade in and float up from the sprites
+				FlxTween.num(_damages[0].y, _damages[0].y - 12, 1,
+					{ ease:FlxEase.circOut}, updateDamageY);
+				FlxTween.num(0, 1, .2, { ease: FlxEase.circInOut,
+					onComplete: doneDamageIn }, updateDamageAlpha);
 				
 			case 1:
 				
@@ -390,18 +412,23 @@ class CombatHUD extends FlxTypedGroup<FlxSprite>
 					_sndFled.play();
 					_results.visible = true;
 					_results.alpha = 0;
-					FlxTween.tween(_results, { alpha:1 }, .66, { ease:FlxEase.circInOut, onComplete:doneResultsIn });
+					FlxTween.tween(_results, { alpha:1 }, .66,
+						{ ease:FlxEase.circInOut, onComplete:doneResultsIn });
 				}
 				else
 				{
 					// if they fail to escape, the enemy will get a free-swing
 					enemyAttack();
-					FlxTween.num(_damages[0].y, _damages[0].y - 12, 1, { ease: FlxEase.circOut}, updateDamageY);
-					FlxTween.num(0, 1, .2, { ease: FlxEase.circInOut, onComplete: doneDamageIn }, updateDamageAlpha);
+					FlxTween.num(_damages[0].y, _damages[0].y - 12, 1,
+						{ ease: FlxEase.circOut}, updateDamageY);
+					FlxTween.num(0, 1, .2,
+						{ ease: FlxEase.circInOut, onComplete: doneDamageIn },
+						updateDamageAlpha);
 				}
 		}
 		
-		// regardless of what happens, we need to set our 'wait' flag so that we can show what happened before moving on
+		// regardless of what happens, we need to set our 'wait' flag
+		//   so that we can show what happened before moving on
 		_wait = true;
 	}
 	
@@ -413,7 +440,8 @@ class CombatHUD extends FlxTypedGroup<FlxSprite>
 		// first, lets see if the enemy hits or not. We'll give him a 30% chance to hit
 		if (FlxG.random.bool(30))
 		{
-			// if we hit, flash the screen white, and deal one damage to the player - then update the player's health
+			// if we hit, flash the screen white, and deal one damage to the player - then
+			//   update the player's health
 			FlxG.camera.flash(FlxColor.WHITE, .2);
 			FlxG.camera.shake(0.01, 0.2);
 			_sndHurt.play();
@@ -453,24 +481,31 @@ class CombatHUD extends FlxTypedGroup<FlxSprite>
 	}
 	
 	/**
-	 * This function is called when our damage texts have finished fading in - it will trigger them to start fading out again, after a short delay
+	 * This function is called when our damage texts have finished fading in -
+	 * it will trigger them to start fading out again, after a short delay
 	 */
 	private function doneDamageIn(_):Void
 	{
-		FlxTween.num(1, 0, .66, { ease: FlxEase.circInOut, startDelay: 1, onComplete: doneDamageOut}, updateDamageAlpha);
+		FlxTween.num(1, 0, .66, { ease: FlxEase.circInOut, startDelay: 1,
+			onComplete: doneDamageOut}, updateDamageAlpha);
 	}
 	
 	/**
-	 * This function is triggered when our results text has finished fading in. If we're not defeated, we will fade out the entire hud after a short delay
+	 * This function is triggered when our results text has finished fading in.
+	 * If we're not defeated, we will fade out the entire hud after a short delay
 	 */
 	private function doneResultsIn(_):Void
 	{
-		FlxTween.num(1, 0, .66, { ease: FlxEase.circOut, onComplete: finishFadeOut, startDelay: 1 }, updateAlpha);
+		FlxTween.num(1, 0, .66, { ease: FlxEase.circOut,
+			onComplete: finishFadeOut, startDelay: 1 }, updateAlpha);
 	}
 	
 	/**
-	 * This function is triggered when the damage texts have finished fading out again. They will clear and reset them for next time. 
-	 * It will also check to see what we're supposed to do next - if the enemy is dead, we trigger victory, if the player is dead we trigger defeat, otherwise we reset for the next round.
+	 * This function is triggered when the damage texts have finished fading
+	 *   out again. They will clear and reset them for next time. 
+	 * It will also check to see what we're supposed to do next - if the enemy
+	 *   is dead, we trigger victory, if the player is dead we trigger defeat,
+	 *   otherwise we reset for the next round.
 	 */
 	private function doneDamageOut(_):Void
 	{
@@ -487,7 +522,8 @@ class CombatHUD extends FlxTypedGroup<FlxSprite>
 			_results.text = "DEFEAT!";
 			_results.visible = true;
 			_results.alpha = 0;
-			FlxTween.tween(_results, { alpha: 1 }, .66, { ease: FlxEase.circInOut, onComplete: doneResultsIn });
+			FlxTween.tween(_results, { alpha: 1 }, .66,
+				{ ease: FlxEase.circInOut, onComplete: doneResultsIn });
 		}
 		else if (_enemyHealth <= 0)
 		{
@@ -497,11 +533,13 @@ class CombatHUD extends FlxTypedGroup<FlxSprite>
 			_results.text = "VICTORY!";
 			_results.visible = true;
 			_results.alpha = 0;
-			FlxTween.tween(_results, { alpha: 1 }, .66, { ease: FlxEase.circInOut, onComplete: doneResultsIn });
+			FlxTween.tween(_results, { alpha: 1 }, .66,
+				{ ease: FlxEase.circInOut, onComplete: doneResultsIn });
 		}
 		else
 		{
-			// both are still alive, so we reset and have the player pick their next action
+			// both are still alive, so we reset and
+			//   have the player pick their next action
 			_wait = false;
 			_pointer.visible = true;
 		}
@@ -511,7 +549,8 @@ class CombatHUD extends FlxTypedGroup<FlxSprite>
 
 /**
  * This enum is used to set the valid values for our outcome variable.
- * Outcome can only ever be one of these 4 values and we can check for these values easily once combat is concluded.
+ * Outcome can only ever be one of these 4 values and we can check for these
+ *   values easily once combat is concluded.
  */
 enum Outcome
 {

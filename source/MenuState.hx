@@ -9,14 +9,29 @@ import flixel.math.FlxMath;
 
 class MenuState extends FlxState
 {
-	private var _btnPlay:FlxButton;  // Play button
+	private var _btnPlay:FlxButton;    // Play button
+	private var _txtTitle:FlxText;     // Title text
+	private var _btnOptions:FlxButton; // Options button
 
 	override public function create():Void
 	{
-		// Play button, used to switch from MenuState to PlayState.
+		// Title text
+		_txtTitle = new FlxText(20, 0, 0, "HaxeFlixel\nTutorial\nGame", 22);
+		_txtTitle.alignment = CENTER;
+		_txtTitle.screenCenter(X);
+		add(_txtTitle);
+
+		// Play button, used to switch to PlayState.
 		_btnPlay = new FlxButton(0, 0, "Play", clickPlay);
-		_btnPlay.screenCenter();
+		_btnPlay.x = (FlxG.width / 2) - _btnPlay.width - 10;
+		_btnPlay.y = FlxG.height - _btnPlay.height - 10;
 		add(_btnPlay);
+
+		// Options button, used to switch to OptionsState.
+		_btnOptions = new FlxButton(0, 0, "Options", clickOptions);
+		_btnOptions.x = (FlxG.width / 2) + 10;
+		_btnOptions.y = FlxG.height - _btnOptions.height - 10;
+		add(_btnOptions);
 
 		super.create();
 	}
@@ -28,8 +43,11 @@ class MenuState extends FlxState
 
 	private function clickPlay():Void
 	{
-		// Function to be attached to the Play button.
-		//   Switches to the PlayState.
 		FlxG.switchState(new PlayState());
+	}
+
+	private function clickOptions():Void
+	{
+		FlxG.switchState(new OptionsState());
 	}
 }

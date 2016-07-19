@@ -10,6 +10,10 @@ import flixel.util.FlxColor;
 import flixel.util.FlxSave;
 using flixel.util.FlxSpriteUtil;
 
+/**
+ * Originally by Gama11 and SeiferTim for a HaxeFlixel tutorial.
+ * Copied with minor edits by Noah Bumgardner.
+ */
 class GameOverState extends FlxState
 {
 	private var _score:Int = 0;			// number of coins we've collected
@@ -22,8 +26,6 @@ class GameOverState extends FlxState
 	private var _btnMainMenu:FlxButton;	// button to go to main menu
 	
 	/**
-	 * Originally by Gama11 and SeiferTim for a HaxeFlixel tutorial.
-	 * Copied with minor edits by Noah Bumgardner.
 	 * Called from PlayState, this will set our win and score variables
 	 * @param	Win		true if the player beat the boss, false if they died
 	 * @param	Score	the number of coins collected

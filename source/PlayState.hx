@@ -10,6 +10,7 @@ import flixel.text.FlxText;
 import flixel.tile.FlxTilemap;
 import flixel.ui.FlxButton;
 import flixel.math.FlxMath;
+import flixel.util.FlxColor;
 using flixel.util.FlxSpriteUtil;
 
 class PlayState extends FlxState
@@ -24,6 +25,8 @@ class PlayState extends FlxState
 	private var _health:Int = 3;
 	private var _inCombat:Bool = false;
 	private var _combatHud:CombatHUD;
+	private var _ending:Bool;
+	private var _won:Bool;
 
 	override public function create():Void
 	{
@@ -67,6 +70,11 @@ class PlayState extends FlxState
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
+		if (_ending)
+		{
+			// Leaving PlayState.
+			return;
+		}
 		if (!_inCombat)
 		{
 			// Movement section of game.
@@ -85,19 +93,35 @@ class PlayState extends FlxState
 				// Combat is over
 				_health = _combatHud.playerHealth;
 				_hud.updateHUD(_health, _money);
-				if (_combatHud.outcome == VICTORY)
+				if (_combatHud.outcome == DEFEAT)
 				{
-					// Combat is won, enemy dies.
-					_combatHud.e.kill();
+					// Player lost, begin leaving PlayState.
+					_ending = true;
+					FlxG.camera.fade(FlxColor.BLACK, .33, false, doneFadeOut);
 				}
 				else
 				{
-					// Combat has ended, enemy starts to flicker.
-					_combatHud.e.flicker();
+					if (_combatHud.outcome == VICTORY)
+					{
+						// Combat is won, enemy dies.
+						_combatHud.e.kill();
+						if (_combatHud.e.etype == 1)
+						{
+							// Enemy was a boss, end game.
+							_won = true;
+							_ending = true;
+							FlxG.camera.fade(FlxColor.BLACK, .33, false, doneFadeOut);
+						}
+					}
+					else
+					{
+						// Combat has ended, enemy starts to flicker.
+						_combatHud.e.flicker();
+					}
+					_inCombat = false;
+					_player.active = true;
+					_grpEnemies.active = true;
 				}
-				_inCombat = false;
-				_player.active = true;
-				_grpEnemies.active = true;
 			}
 			// Else combat continues.
 		}
@@ -163,5 +187,11 @@ class PlayState extends FlxState
 		_player.active = false;
 		_grpEnemies.active = false;
 		_combatHud.initCombat(_health, E);
+	}
+
+	private function doneFadeOut():Void
+	{
+		// Switches to the Game Over state.
+		FlxG.switchState(new GameOverState(_won, _money));
 	}
 }

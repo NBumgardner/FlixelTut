@@ -26,9 +26,10 @@ class MenuState extends FlxState
 		super.update(elapsed);
 	}
 
-	// Function to be attached to the Play button. Switches to the PlayState.
 	private function clickPlay():Void
 	{
+		// Function to be attached to the Play button.
+		//   Switches to the PlayState.
 		FlxG.switchState(new PlayState());
 	}
 }

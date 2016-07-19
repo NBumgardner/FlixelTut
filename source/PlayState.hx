@@ -10,6 +10,7 @@ import flixel.text.FlxText;
 import flixel.tile.FlxTilemap;
 import flixel.ui.FlxButton;
 import flixel.math.FlxMath;
+using flixel.util.FlxSpriteUtil;
 
 class PlayState extends FlxState
 {
@@ -21,6 +22,8 @@ class PlayState extends FlxState
 	private var _hud:HUD;
 	private var _money:Int = 0;
 	private var _health:Int = 3;
+	private var _inCombat:Bool = false;
+	private var _combatHud:CombatHUD;
 
 	override public function create():Void
 	{
@@ -50,8 +53,13 @@ class PlayState extends FlxState
 		// Set camera to follow Player
 		FlxG.camera.follow(_player, TOPDOWN, 1);
 
+		// Create always-visible HUD.
 		_hud = new HUD();
 		add(_hud);
+
+		// Create hidden Combat HUD.
+		_combatHud = new CombatHUD();
+		add(_combatHud);
 
 		super.create();
 	}
@@ -59,10 +67,40 @@ class PlayState extends FlxState
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
-		FlxG.collide(_player, _mWalls);
-		FlxG.overlap(_player, _grpCoins, playerTouchCoin);
-		FlxG.collide(_grpEnemies, _mWalls);
-		_grpEnemies.forEachAlive(checkEnemyVision);
+		if (!_inCombat)
+		{
+			// Movement section of game.
+			// Check for collisions and enemy vision.
+			FlxG.collide(_player, _mWalls);
+			FlxG.overlap(_player, _grpCoins, playerTouchCoin);
+			FlxG.collide(_grpEnemies, _mWalls);
+			_grpEnemies.forEachAlive(checkEnemyVision);
+			FlxG.overlap(_player, _grpEnemies, playerTouchEnemy);
+		}
+		else
+		{
+			// Combat section of game.
+			if (!_combatHud.visible)
+			{
+				// Combat is over
+				_health = _combatHud.playerHealth;
+				_hud.updateHUD(_health, _money);
+				if (_combatHud.outcome == VICTORY)
+				{
+					// Combat is won, enemy dies.
+					_combatHud.e.kill();
+				}
+				else
+				{
+					// Combat has ended, enemy starts to flicker.
+					_combatHud.e.flicker();
+				}
+				_inCombat = false;
+				_player.active = true;
+				_grpEnemies.active = true;
+			}
+			// Else combat continues.
+		}
 	}
 
 	private function placeEntities(entityName:String, entityData:Xml):Void
@@ -108,5 +146,22 @@ class PlayState extends FlxState
 		}
 		else
 			e.seesPlayer = false;
+	}
+
+	private function playerTouchEnemy(P:Player, E:Enemy):Void
+	{
+		// If Player and an enemy touch,
+		//   and the enemy is not flickering, combat begins.
+		if (P.alive && P.exists && E.alive && E.exists && !E.isFlickering())
+			startCombat(E);
+	}
+
+	private function startCombat(E:Enemy):Void
+	{
+		// Set variables to begin combat.
+		_inCombat = true;
+		_player.active = false;
+		_grpEnemies.active = false;
+		_combatHud.initCombat(_health, E);
 	}
 }

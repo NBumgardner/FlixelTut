@@ -4,6 +4,7 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.math.FlxPoint;
 import flixel.math.FlxVelocity;
+using flixel.util.FlxSpriteUtil;
 
 /**
  * Description:  Enemy is a common class for all enemies in the game.
@@ -133,7 +134,19 @@ class Enemy extends FlxSprite
 
 	override public function update(elapsed:Float):Void
 	{
+		if (isFlickering())
+			return;
 		_brain.update();
 		super.update(elapsed);
+	}
+
+	// Used in CombatHUD.hx to display the correct enemy sprite.
+	public function changeEnemy(EType:Int):Void
+	{
+		if (etype != EType)
+		{
+			etype = EType;
+			loadGraphic("assets/images/enemy-" + etype + ".png", true, 16, 16);
+		}
 	}
 }

@@ -122,7 +122,6 @@ class Player extends FlxSprite
 					case FlxObject.DOWN:
 						animation.play("d");
 				}
-				//
 				_sndStep.play();
 			}
 		}

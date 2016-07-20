@@ -5,6 +5,7 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.math.FlxPoint;
 import flixel.system.FlxAssets.FlxGraphicAsset;
+import flixel.system.FlxSound;
 import flixel.util.FlxColor;
 
 /**
@@ -14,6 +15,7 @@ import flixel.util.FlxColor;
  */
 class Player extends FlxSprite
 {
+	private var _sndStep:FlxSound;
 	public var speed:Float = 200;
 
 	public function new(?X:Float=0, ?Y:Float=0) 
@@ -32,6 +34,9 @@ class Player extends FlxSprite
 		// Reduce hitbox size
 		setSize(8, 14);
 		offset.set(4, 2);
+
+		// Load footstep sound.
+		_sndStep = FlxG.sound.load(AssetPaths.step__wav);
 	}
 
 	// Reads keyboard inputs to set the speed and angle of the Player.
@@ -105,6 +110,7 @@ class Player extends FlxSprite
 
 			// If Player is moving, velocity != 0 for an axis,
 			//   then change the animation to match Player facing.
+			//   Also play footstep sound.
 			if ((velocity.x != 0 || velocity.y != 0) && touching == FlxObject.NONE)
 			{
 				switch (facing) 
@@ -116,6 +122,8 @@ class Player extends FlxSprite
 					case FlxObject.DOWN:
 						animation.play("d");
 				}
+				//
+				_sndStep.play();
 			}
 		}
 	}

@@ -25,12 +25,14 @@ class MenuState extends FlxState
 		_btnPlay = new FlxButton(0, 0, "Play", clickPlay);
 		_btnPlay.x = (FlxG.width / 2) - _btnPlay.width - 10;
 		_btnPlay.y = FlxG.height - _btnPlay.height - 10;
+		_btnPlay.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(_btnPlay);
 
 		// Options button, used to switch to OptionsState.
 		_btnOptions = new FlxButton(0, 0, "Options", clickOptions);
 		_btnOptions.x = (FlxG.width / 2) + 10;
 		_btnOptions.y = FlxG.height - _btnOptions.height - 10;
+		_btnOptions.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(_btnOptions);
 
 		super.create();

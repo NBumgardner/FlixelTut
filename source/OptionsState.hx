@@ -15,6 +15,11 @@ import flixel.util.FlxSave;
  */
 class OptionsState extends FlxState
 {
+	#if desktop
+	// Button to toggle fullscreen mode on Windows.
+	private var _btnFullScreen:FlxButton;
+	#end
+
 	// define our screen elements
 	private var _txtTitle:FlxText;
 	private var _barVolume:FlxBar;

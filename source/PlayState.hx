@@ -69,6 +69,10 @@ class PlayState extends FlxState
 		// Load coin sound.
 		_sndCoin = FlxG.sound.load(AssetPaths.coin__wav);
 
+		#if !FLX_NO_MOUSE
+		FlxG.mouse.visible = false;
+		#end
+
 		// Fade into this state.
 		FlxG.camera.fade(FlxColor.BLACK, .33, true);
 

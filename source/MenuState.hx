@@ -9,12 +9,18 @@ import flixel.math.FlxMath;
 
 class MenuState extends FlxState
 {
+	#if desktop
+	// Button to exit game on Windows.
+	private var _btnExit:FlxButton;
+	#end
+
 	private var _btnPlay:FlxButton;    // Play button
 	private var _txtTitle:FlxText;     // Title text
 	private var _btnOptions:FlxButton; // Options button
 
 	override public function create():Void
 	{
+		
 		// Title text
 		_txtTitle = new FlxText(20, 0, 0, "HaxeFlixel\nTutorial\nGame", 22);
 		_txtTitle.alignment = CENTER;
@@ -34,6 +40,13 @@ class MenuState extends FlxState
 		_btnOptions.y = FlxG.height - _btnOptions.height - 10;
 		_btnOptions.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(_btnOptions);
+		
+		#if desktop
+		// Setup exit game button on Windows.
+		_btnExit = new FlxButton(FlxG.width - 28, 8, "X", clickExit);
+		_btnExit.loadGraphic(AssetPaths.button__png, true, 20, 20);
+		add(_btnExit);
+		#end
 
 		super.create();
 	}
@@ -52,4 +65,14 @@ class MenuState extends FlxState
 	{
 		FlxG.switchState(new OptionsState());
 	}
+
+	#if desktop
+	/**
+	 * Function to exit game on Windows.
+	 */
+	private function clickExit():Void
+	{
+		System.exit(0);
+	}
+	#end
 }

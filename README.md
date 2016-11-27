@@ -1,7 +1,7 @@
 # FlixelTut
 This dungeon crawler video game is my hand-coded version of a [HaxeFlixel tutorial](http://haxeflixel.com/documentation/tutorial/).
 
-I completed sections 1-12 and documented each function. For the 2-3 files I was asked to copy: I made a note in the commit, read over the copied code, and fixed any typos I found.
+I completed sections 1-12, half of section 13, and documented each function. For the 2-3 files I was asked to copy: I made a note in the commit, read over the copied code, and fixed any typos I found.
 
 ## Build Steps
 
@@ -21,6 +21,14 @@ haxelib run lime test flash
 ```
 
 This command may require the project to already be built.
+
+### Untested Features
+Two Windows-specific features have not yet been tested.
+
+* Fullscreen button
+* Exit game button
+
+Their code comes from [section 13 of the tutorial](http://haxeflixel.com/documentation/multiple-platforms/).
 
 ## Dependencies
 Standard HaxeFlixel dependencies include [HaxeFlixel](http://haxeflixel.com/download/), [Haxe](http://www.haxe.org/download), and [OpenFL](http://www.openfl.org/download/). This project also requires [Flash player](https://get.adobe.com/flashplayer/).

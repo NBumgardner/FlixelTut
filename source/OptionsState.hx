@@ -29,9 +29,6 @@ class OptionsState extends FlxState
 	private var _btnVolumeUp:FlxButton;
 	private var _btnClearData:FlxButton;
 	private var _btnBack:FlxButton;
-	#if desktop
-	private var _btnFullScreen:FlxButton;
-	#end
 	
 	// a save object for saving settings
 	private var _save:FlxSave;

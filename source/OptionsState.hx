@@ -72,6 +72,7 @@ class OptionsState extends FlxState
 		add(_txtVolumeAmt);
 		
 		#if desktop
+		// Setup fullscreen button on Windows.
 		_btnFullScreen = new FlxButton(0, _barVolume.y + _barVolume.height + 8,
 			FlxG.fullscreen ? "FULLSCREEN" : "WINDOWED", clickFullscreen);
 		_btnFullScreen.screenCenter(FlxAxes.X);
@@ -100,6 +101,9 @@ class OptionsState extends FlxState
 	}
 	
 	#if desktop
+	/**
+	 * Function to toggle fullscreen mode on Windows.
+	 */
 	private function clickFullscreen():Void
 	{
 		FlxG.fullscreen = !FlxG.fullscreen;

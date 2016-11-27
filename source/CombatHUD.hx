@@ -443,7 +443,7 @@ class CombatHUD extends FlxTypedGroup<FlxSprite>
 			// if we hit, flash the screen white, and deal one damage to the player - then
 			//   update the player's health
 			FlxG.camera.flash(FlxColor.WHITE, .2);
-			FlxG.camera.shake(0.01, 0.2);
+			FlxG.camera.shake(.01, .2);
 			_sndHurt.play();
 			_damages[0].text = "1";
 			playerHealth--;

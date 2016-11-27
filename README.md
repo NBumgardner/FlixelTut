@@ -1,9 +1,13 @@
 # FlixelTut
 This dungeon crawler video game is my hand-coded version of a [HaxeFlixel tutorial](http://haxeflixel.com/documentation/tutorial/).
 
-I completed sections 1-12 and documented each function. For the 2-3 files I was asked to copy: I made a note in the commit, read over the copied code, and fixed any typos I found.
+I documented functions, used provided assets, and omitted parts of [section 13](http://haxeflixel.com/documentation/multiple-platforms/)
+since I could not test it on **Windows** or **Android** builds. For the 2-3 files I was asked to copy:
+I made a note in the commit, read over the copied code, and fixed any typos I found.
 
 ## Build Steps
+
+Below are two methods for building the full **Flash** version of the game.
 
 ### Method 1: Using the HaxeDevelop IDE
 

@@ -6,6 +6,7 @@ import flixel.FlxState;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.math.FlxMath;
+import flixel.util.FlxColor;
 
 class MenuState extends FlxState
 {
@@ -35,6 +36,9 @@ class MenuState extends FlxState
 		_btnOptions.onUp.sound = FlxG.sound.load(AssetPaths.select__wav);
 		add(_btnOptions);
 
+		// Fade into this state.
+		FlxG.camera.fade(FlxColor.BLACK, .33, true);
+
 		super.create();
 	}
 
@@ -45,11 +49,19 @@ class MenuState extends FlxState
 
 	private function clickPlay():Void
 	{
-		FlxG.switchState(new PlayState());
+		// Fade out of this state.
+		FlxG.camera.fade(FlxColor.BLACK, .33, false, function()
+		{
+			FlxG.switchState(new PlayState());
+		});
 	}
 
 	private function clickOptions():Void
 	{
-		FlxG.switchState(new OptionsState());
+		// Fade out of this state.
+		FlxG.camera.fade(FlxColor.BLACK, .33, false, function()
+		{
+			FlxG.switchState(new OptionsState());
+		});
 	}
 }

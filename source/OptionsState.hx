@@ -15,6 +15,11 @@ import flixel.util.FlxSave;
  */
 class OptionsState extends FlxState
 {
+	#if desktop
+	// Button to toggle fullscreen mode on Windows.
+	private var _btnFullScreen:FlxButton;
+	#end
+
 	// define our screen elements
 	private var _txtTitle:FlxText;
 	private var _barVolume:FlxBar;
@@ -24,9 +29,6 @@ class OptionsState extends FlxState
 	private var _btnVolumeUp:FlxButton;
 	private var _btnClearData:FlxButton;
 	private var _btnBack:FlxButton;
-	#if desktop
-	private var _btnFullScreen:FlxButton;
-	#end
 	
 	// a save object for saving settings
 	private var _save:FlxSave;
@@ -92,6 +94,7 @@ class OptionsState extends FlxState
 		// update our bar to show the current volume level
 		updateVolume();
 		
+		// Fade into this state.
 		FlxG.camera.fade(FlxColor.BLACK, .33, true);
 		
 		super.create();
@@ -124,6 +127,7 @@ class OptionsState extends FlxState
 	private function clickBack():Void
 	{
 		_save.close();
+		// Fade out of this state.
 		FlxG.camera.fade(FlxColor.BLACK, .33, false, function()
 		{
 			FlxG.switchState(new MenuState());

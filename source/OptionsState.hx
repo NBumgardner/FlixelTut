@@ -92,6 +92,7 @@ class OptionsState extends FlxState
 		// update our bar to show the current volume level
 		updateVolume();
 		
+		// Fade into this state.
 		FlxG.camera.fade(FlxColor.BLACK, .33, true);
 		
 		super.create();
@@ -124,6 +125,7 @@ class OptionsState extends FlxState
 	private function clickBack():Void
 	{
 		_save.close();
+		// Fade out of this state.
 		FlxG.camera.fade(FlxColor.BLACK, .33, false, function()
 		{
 			FlxG.switchState(new MenuState());

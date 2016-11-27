@@ -69,6 +69,9 @@ class PlayState extends FlxState
 		// Load coin sound.
 		_sndCoin = FlxG.sound.load(AssetPaths.coin__wav);
 
+		// Fade into this state.
+		FlxG.camera.fade(FlxColor.BLACK, .33, true);
+
 		super.create();
 	}
 
@@ -197,7 +200,11 @@ class PlayState extends FlxState
 
 	private function doneFadeOut():Void
 	{
-		// Switches to the Game Over state.
-		FlxG.switchState(new GameOverState(_won, _money));
+		// Fade out of this state.
+		FlxG.camera.fade(FlxColor.BLACK, .33, false, function()
+		{
+			// Switches to the Game Over state.
+			FlxG.switchState(new GameOverState(_won, _money));
+		});
 	}
 }
